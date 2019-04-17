@@ -44,22 +44,19 @@ PixelInputType WaterVertexShader(VertexInputType input)
 
 	input.position.w = 1.0f;
 
-	// Calculate the position of the vertex against the world, view, and projection matrices.
+	//Calculate the position of the vertex against the world, view, and projection matrices.
 	output.position = mul(input.position, worldMatrix);
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projectionMatrix);
 
-	// Store the texture coordinates for the pixel shader.
+	//Store the texture coordinates for the pixel shader.
 	output.tex = input.tex;
 
-	// ”½Ë projection~worlds—ñ‚ğì¬
 	reflectProjectWorld = mul(reflectionMatrix, projectionMatrix);
 	reflectProjectWorld = mul(worldMatrix, reflectProjectWorld);
 
-	// reflectProjectWorlds—ñ‚É‘Î‚µ‚Ä“ü—ÍˆÊ’u‚ğŒvZ‚µ‚Ü‚·
 	output.reflectionPosition = mul(input.position, reflectProjectWorld);
 
-	// ‹üÜ‚Ì‚½‚ß‚Ìview ~ projection ~ worlds—ñ‚ğì¬‚µ‚Ü‚·
 	viewProjectWorld = mul(viewMatrix, projectionMatrix);
 	viewProjectWorld = mul(worldMatrix, viewProjectWorld);
 
@@ -79,23 +76,19 @@ float4 reflectionColor;
 float4 refractionColor;
 float4 color;
 
-// WaterPipeline ‚©‚ç‚Ì•Ï”‚Å–@üƒTƒ“ƒvƒŠƒ“ƒOˆÊ’u‚ğˆÚ“®
 input.tex.y += waterTranslation;
 
-// “Š‰e‚µ‚½”½ËƒeƒNƒXƒ`ƒƒÀ•W‚ğŒvZ
 reflectTexCoord.x = input.reflectionPosition.x / input.reflectionPosition.w / 2.0f + 0.5f;
 reflectTexCoord.y = -input.reflectionPosition.y / input.reflectionPosition.w / 2.0f + 0.5f;
 
-// “Š‰e‚µ‚½‹üÜƒeƒNƒXƒ`ƒƒÀ•W‚ğŒvZ
 refractTexCoord.x = input.refractionPosition.x / input.refractionPosition.w / 2.0f + 0.5f;
 refractTexCoord.y = -input.refractionPosition.y / input.refractionPosition.w / 2.0f + 0.5f;
 
-//–@ü‚ÌƒTƒ“ƒvƒŠƒ“ƒO
 normalMap = normalTexture.Sample(SampleType, input.tex);
 
 normal = (normalMap.xyz * 2.0f) - 1.0f;
 
-// ”g–ä
+//æ³¢ç´‹
 reflectTexCoord = reflectTexCoord + (normal.xy * reflectRefractScale);
 refractTexCoord = refractTexCoord + (normal.xy * reflectRefractScale);
 
