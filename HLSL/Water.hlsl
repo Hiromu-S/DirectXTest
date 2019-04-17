@@ -88,7 +88,6 @@ normalMap = normalTexture.Sample(SampleType, input.tex);
 
 normal = (normalMap.xyz * 2.0f) - 1.0f;
 
-//波紋
 reflectTexCoord = reflectTexCoord + (normal.xy * reflectRefractScale);
 refractTexCoord = refractTexCoord + (normal.xy * reflectRefractScale);
 
